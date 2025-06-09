@@ -122,6 +122,7 @@ private:
 
 private: /* sub setuppatterns here :p */
 	void SetupModbasePatterns();
+	void SetupScriptContextPatterns();
 	void SetupNetworkPatterns();
 	void SetupPlayerIdentityPatterns();
 	void SetupWorldPatterns();
@@ -140,6 +141,8 @@ private: /* sub setuppatterns here :p */
 	void SetupAnimClassPatterns();
 	void SetupCameraPatterns();
 	void SetupVisualStatePatterns();
+	void SetupItemInventoryPatterns();
+	void SetupCargoGridPatterns();
 
 private:
 	bool SetupPatterns();

@@ -185,14 +185,21 @@ bool Updater::DeallocateModule() {
 	return true;
 }
 
+
 void Updater::SetupModbasePatterns() {
 
 	AUTO_OFFSET(Modbase, World, "\x48\x8B\x05\x00\x00\x00\x00\x48\x8D\x54\x24\x00\x48\x8B\x48\x30", "xxx????xxxx?xxxx", ".text", ScanType::MovCs, 0);
 	AUTO_OFFSET(Modbase, Network, "\x48\x8D\x0D\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x8B\x1D\x00\x00\x00\x00\x84\xC0", "xxx????x????xxx????xx", ".text", ScanType::MovCs, 0);
 	AUTO_OFFSET(Modbase, Tick, "\x48\x8B\x05\x00\x00\x00\x00\x0F\x57\xC9\x66\x0F\x6E\x03", "xxx????xxxxxxx", ".text", ScanType::MovCs, 0);
+	AUTO_OFFSET(Modbase, ScriptContext, "\x48\x8B\x05\x00\x00\x00\x00\x48\x8B\xD9\x4C\x8B\x88\x00\x00\x00\x00", "xxx????xxxxxx????", ".text", ScanType::MovCs, 0);
 
 }
 
+void Updater::SetupScriptContextPatterns() {
+
+	AUTO_OFFSET(ScriptContext, ConstantTable, "\x48\x8B\x43\x00\x4D\x8B\xC4\x4C\x8B\x4C\x24\x00\x48\x8B\xCB", "xxx?xxxxxxx?xxx", ".text", ScanType::MovRegByte, 0);
+
+}
 
 void Updater::SetupNetworkPatterns() {
 
@@ -220,14 +227,15 @@ void Updater::SetupWorldPatterns() {
 void Updater::SetupHumanPatterns() {
 
 	AUTO_OFFSET(Human, HumanType, "\x4C\x8B\xB1\x00\x00\x00\x00\x32\xDB\x0F\x29\x74\x24\x00", "xxx????xxxxxx?", ".text", ScanType::MovReg, 0);
-	AUTO_OFFSET(Human, VisualState, "\x48\x8B\xB7\x00\x00\x00\x00\x45\x33\xFF\xF7\xE9", "xxx????xxxxx", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(Human, VisualState, "\x48\x8B\x9F\x00\x00\x00\x00\x49\x8B\xCE\xFF\x90\x00\x00\x00\x00\x8B\x10", "xxx????xxxxx????xx", ".text", ScanType::MovReg, 0);
 	AUTO_OFFSET(Human, LodShape, "\x4C\x8B\x91\x00\x00\x00\x00\x49\x8B\xF9\x48\x63\xC2", "xxx????xxxxxx", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(Human, Inventory, "\x48\x8B\x8B\x00\x00\x00\x00\x48\x8B\x01\xFF\x90\x00\x00\x00\x00\xEB\x02", "xxx????xxxxx????xx", ".text", ScanType::MovReg, 0);
 
 }
 
 void Updater::SetupDayZInfectedPatterns() {
 
-
+	AUTO_OFFSET(DayZInfected, Skeleton, "\x48\x8B\x8B\x00\x00\x00\x00\x48\x8D\x55\xC0\x40\x32\xFF", "xxx????xxxxxxx", ".text", ScanType::MovReg, 0);
 
 }
 
@@ -239,8 +247,6 @@ void Updater::SetupHumanTypePatterns() {
 }
 
 void Updater::SetupDayZLocalPatterns() {
-
-	AUTO_OFFSET(DayZInfected, Skeleton, "\x48\x8B\x89\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x84\xC0\x74\x31", "xxx????x????xxxx", ".text", ScanType::MovReg, 0);
 
 }
 
@@ -255,6 +261,7 @@ void Updater::SetupDayZPlayerPatterns() {
 void Updater::SetupDayZPlayerInventoryPatterns() {
 
 	AUTO_OFFSET(DayZPlayerInventory, Hands, "\x48\x8B\x8B\x00\x00\x00\x00\x48\x8B\xF8\x48\x85\xC9", "xxx????xxxxxx", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(DayZPlayerInventory, Clothing, "\x48\x8B\x99\x00\x00\x00\x00\x41\x8B\xF0\x8B\xB9\x00\x00\x00\x00\x48\x8B\xE9", "xxx????xxxxx????xxx", ".text", ScanType::MovReg, 0);
 
 }
 
@@ -267,10 +274,11 @@ void Updater::SetupInventoryItemPatterns() {
 
 void Updater::SetupWeaponPatterns() {
 
+	/* Muzzle Index not weapon index [removed]ing dummy ! */
 	AUTO_OFFSET(Weapon, WeaponIndex, "\x48\x8B\xCF\x48\x63\x9F\x00\x00\x00\x00\xFF\x90\x00\x00\x00\x00", "xxxxxx????xx????", ".text", ScanType::MovReg, 3);
-	AUTO_OFFSET(Weapon, WeaponInfoTable, "\x48\x03\x91\x00\x00\x00\x00\x48\x83\x7A\x00\x00\x74\x19", "xxx????xxx??xx", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(Weapon, WeaponInfoTable, "\x48\x8B\x81\x00\x00\x00\x00\x44\x8B\xC2\x49\xC1\xE0\x08", "xxx????xxxxxxx", ".text", ScanType::MovReg, 0);
 	AUTO_OFFSET(Weapon, MuzzleCount, "\x3B\x98\x00\x00\x00\x00\x73\x00\x8B\xCB", "xx????x?xx", ".text", ScanType::MovRegSml, 0);
-	AUTO_OFFSET(Weapon, WeaponInfoSize, "\x48\x69\xD0\x00\x00\x00\x00\x48\x03\x91\x00\x00\x00\x00\x48\x83\x7A\x00\x00", "xxx????xxx????xxx??", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(Weapon, WeaponInfoSize, "\x3B\x91\x00\x00\x00\x00\x73\x00\x8B\xCA", "xx????x?xx", ".text", ScanType::MovRegSml, 0);
 
 }
 
@@ -282,6 +290,7 @@ void Updater::SetupWeaponInventoryPatterns() {
 
 void Updater::SetupMagazinePatterns() {
 
+	AUTO_OFFSET(Magazine, BulletList, "\x48\x8D\xB9\x00\x00\x00\x00\x48\x8B\xDA\x48\x8B\x17", "xxx????xxxxxx", ".text", ScanType::MovReg, 0);
 	AUTO_OFFSET(Magazine, MagazineType, "\x4C\x8B\xB1\x00\x00\x00\x00\x32\xDB\x0F\x29\x74\x24\x00", "xxx????xxxxxx?", ".text", ScanType::MovReg, 0);
 	AUTO_OFFSET(Magazine, AmmoCount, "\x8B\xA9\x00\x00\x00\x00\x4C\x89\x74\x24\x00", "xx????xxxx?", ".text", ScanType::MovRegSml, 0);
 
@@ -296,7 +305,7 @@ void Updater::SetupAmmoTypePatterns() {
 
 void Updater::SetupSkeletonPatterns() {
 
-	AUTO_OFFSET(Skeleton, AnimClass1, "\x48\x83\xC1\x70\xE9\x00\x00\x00\x00\xCC\xCC\xCC\xCC\xCC\xCC\xCC\x48\x8B\x49\x28\x48\x85\xC9\x75\x03\x32\xC0", "xxxxx????xxxxxxxxxxxxxxxxxx", ".text", ScanType::MovRegByte, 0);
+	AUTO_OFFSET(Skeleton, AnimClass1, "\x48\x8B\x8F\x00\x00\x00\x00\x0F\xB6\xD0\x48\x81\xC1\x00\x00\x00\x00", "xxx????xxxxxx????", ".text", ScanType::MovReg, 10);
 	AUTO_OFFSET(Skeleton, AnimClass2, "\xE8\x00\x00\x00\x00\xEB\x12\x4C\x8B\xCB\x89\x7C\x24\x20\x4D\x8B\xC4\x49\x8B\xCE", "x????xxxxxxxxxxxxxxx", ".text", ScanType::TraceMovRegByte, 16);
 
 }
@@ -322,10 +331,24 @@ void Updater::SetupVisualStatePatterns() {
 
 }
 
+void Updater::SetupItemInventoryPatterns() {
+
+	AUTO_OFFSET(ItemInventory, CargoGrid, "\x48\x8B\x8B\x00\x00\x00\x00\x44\x8B\x4F\x00\x4C\x8B\x40\x00\x0F\xB6\x47\x00", "xxx????xxx?xxx?xxx?", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(ItemInventory, Quality, "\x0F\xBE\x89\x00\x00\x00\x00\x33\xD2\x84\xC9", "xxx????xxxx", ".text", ScanType::MovReg, 0);
+
+}
+
+void Updater::SetupCargoGridPatterns() {
+
+	AUTO_OFFSET(CargoGrid, ItemList, "\x4C\x8B\x51\x00\x48\x8B\xF9\x41\x8B\xD9\x49\x8B\xF0", "xxx?xxxxxxxxx", ".text", ScanType::MovRegByte, 0);
+
+}
+
 
 bool Updater::SetupPatterns() {
 
 	SetupModbasePatterns();
+	SetupScriptContextPatterns();
 	SetupNetworkPatterns();
 	SetupPlayerIdentityPatterns();
 	SetupWorldPatterns();
@@ -344,6 +367,8 @@ bool Updater::SetupPatterns() {
 	SetupAnimClassPatterns();
 	SetupCameraPatterns();
 	SetupVisualStatePatterns();
+	SetupItemInventoryPatterns();
+	SetupCargoGridPatterns();
 
 	return true;
 }
@@ -375,7 +400,7 @@ bool Updater::Scan() {
 	return true;
 }
 
-/* cluster fuck #if */
+/* cluster [removed] #if */
 bool Updater::Release() {
 
 	bool Result = true;
@@ -388,22 +413,27 @@ bool Updater::Release() {
 #endif
 
 #if _DEBUG
-			printf("[UPDATER] Failed to get offset: %s\n", Data.first.c_str());
+			printf("[OFFSET: ] Failed to get offset: %s\n", Data.first.c_str());
 #endif
 
 			Result = false;
 		}
 
 #if _DEBUG
-		printf("[UPDATER] %-36s -> 0x%p\n", Data.first.c_str(), Data.second.GetOffset());
+		// Format offset to remove leading zeros
+		UINT64 offset = Data.second.GetOffset();
+		if (offset != 0) {
+			printf("[OFFSET: ] %-36s -> 0x%llx\n", Data.first.c_str(), offset);
+		}
+		else {
+			printf("[OFFSET: ] %-36s -> 0x0\n", Data.first.c_str());
+		}
 #endif
-
-
-	}
+		}
 
 	m_Scans.clear();
 
 	(void)DeallocateModule();
 
 	return Result;
-}
+	}
