@@ -423,7 +423,7 @@ bool Updater::Release() {
 		// Format offset to remove leading zeros
 		UINT64 offset = Data.second.GetOffset();
 		if (offset != 0) {
-			printf("[OFFSET: ] %-36s -> 0x%llx\n", Data.first.c_str(), offset);
+			printf("[OFFSET: ] %-36s -> 0x%llX\n", Data.first.c_str(), offset);
 		}
 		else {
 			printf("[OFFSET: ] %-36s -> 0x0\n", Data.first.c_str());
