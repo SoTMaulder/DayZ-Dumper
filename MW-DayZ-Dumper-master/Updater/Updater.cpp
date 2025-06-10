@@ -189,9 +189,9 @@ bool Updater::DeallocateModule() {
 void Updater::SetupModbasePatterns() {
 
 	AUTO_OFFSET(Modbase, World, "\x48\x8B\x05\x00\x00\x00\x00\x48\x8D\x54\x24\x00\x48\x8B\x48\x30", "xxx????xxxx?xxxx", ".text", ScanType::MovCs, 0);
-	AUTO_OFFSET(Modbase, Network, "\x48\x8D\x0D\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x8B\x1D\x00\x00\x00\x00\x84\xC0", "xxx????x????xxx????xx", ".text", ScanType::MovCs, 0);
-	AUTO_OFFSET(Modbase, Tick, "\x48\x8B\x05\x00\x00\x00\x00\x0F\x57\xC9\x66\x0F\x6E\x03", "xxx????xxxxxxx", ".text", ScanType::MovCs, 0);
-	AUTO_OFFSET(Modbase, ScriptContext, "\x48\x8B\x05\x00\x00\x00\x00\x48\x8B\xD9\x4C\x8B\x88\x00\x00\x00\x00", "xxx????xxxxxx????", ".text", ScanType::MovCs, 0);
+	AUTO_OFFSET(Modbase, Network, "\x48\x8D\x0D\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x84\xC0\x75\x00\xE8", "xxx????x????xxx?x", ".text", ScanType::MovCs, 0);
+	AUTO_OFFSET(Modbase, Tick, "\x4C\x8B\x05\x00\xAD\xEB\x00\x0F\x57\xC0\x0F\x57\xC9\x48\x8B\xD0", "xxx?xxxxxxxxxxxx", ".text", ScanType::MovCs, 0);
+	AUTO_OFFSET(Modbase, ScriptContext, "\x48\x8D\x05\x00\x24\x8A\x00\x48\x8B\x5C\x24\x38\x48\x89\x35\x34", "xxx?xxxxxxxxxxxx", ".text", ScanType::MovCs, 0);
 
 }
 
@@ -253,7 +253,7 @@ void Updater::SetupDayZLocalPatterns() {
 void Updater::SetupDayZPlayerPatterns() {
 
 	AUTO_OFFSET(DayZPlayer, Skeleton, "\x49\x8B\x97\x00\x00\x00\x00\x48\x8D\x4D\xD0", "xxx????xxxx", ".text", ScanType::MovReg, 0);
-	AUTO_OFFSET(DayZPlayer, NetworkID, "\x41\x8B\x9E\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x8B\xC8", "xxx????x????xxx", ".text", ScanType::MovReg, 0);
+	AUTO_OFFSET(DayZPlayer, NetworkID, "\x8B\x92\xE4\x06\x00\x00\x48\x8B\xC8\xE8\x00\x00\x00\x00\x48\x8B\xF0", "xxxxxxxxxx????xxx", ".text", ScanType::MovReg, 0);
 	AUTO_OFFSET(DayZPlayer, Inventory, "\x48\x8B\x8B\x00\x00\x00\x00\x48\x8B\x01\xFF\x90\x00\x00\x00\x00\xEB\x02", "xxx????xxxxx????xx", ".text", ScanType::MovReg, 0);
 
 }
