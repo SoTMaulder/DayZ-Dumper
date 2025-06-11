@@ -32,6 +32,7 @@ namespace Offsets {
 	ADD_OFFSET(World, GrassDensity);
 	ADD_OFFSET(World, LocalPlayer);						// DONE
 	ADD_OFFSET(World, LocalOffset);	// neg value		// DONE
+	ADD_OFFSET(World, NoGrass);						// DONE
 
 	/* Human Offsets */
 	ADD_OFFSET(Human, HumanType);						// DONE
@@ -78,6 +79,7 @@ namespace Offsets {
 
 	/* AmmoType Offsets */
 	ADD_OFFSET(Magazine, BulletList);
+	ADD_OFFSET(Magazine, BulletList2);
 	ADD_OFFSET(AmmoType, InitSpeed);					// DONE
 	ADD_OFFSET(AmmoType, AirFriction);					// DONE
 
@@ -87,6 +89,8 @@ namespace Offsets {
 
 	/* AnimClass Offsets */
 	ADD_OFFSET(AnimClass, MatrixArray);					// DONE
+	ADD_OFFSET(AnimClass, AnimComponent);					// DONE
+	ADD_OFFSET(AnimClass, MatrixB);					// DONE
 	ADD_OFFSET_MANUAL(AnimClass, MatrixEntry, 0x54);	// DONE
 
 	/*Item Inventory Offsets */
